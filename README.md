@@ -39,11 +39,16 @@ npm run dev
 ## Project Structure
 
 ```
-├── index.html          # Entry HTML file
-├── main.js            # Main JavaScript file
-├── style.css          # Global styles
+├── public/
+│   └── favicon.svg     # Application favicon
+├── src/
+│   ├── main.js        # Application entry point
+│   ├── app.js         # Main application class
+│   └── style.css      # Global styles
+├── index.html         # Entry HTML file
 ├── vite.config.js     # Vite configuration
-└── package.json       # Project dependencies and scripts
+├── package.json       # Project dependencies and scripts
+└── .gitignore         # Git ignore rules
 ```
 
 ## Customization
