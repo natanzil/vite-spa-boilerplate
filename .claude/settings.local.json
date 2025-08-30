@@ -10,7 +10,10 @@
       "Bash(git branch:*)",
       "Bash(git checkout:*)",
       "Bash(git config:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Read(C:\\Users\\User\\Downloads/**)",
+      "Bash(npm run dev:*)",
+      "Bash(npm install)"
     ],
     "deny": [],
     "ask": []

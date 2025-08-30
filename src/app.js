@@ -12,100 +12,146 @@ export class App {
   render() {
     this.element.innerHTML = `
       <div class="app">
-        <header class="header">
-          <h1>Vite SPA Boilerplate</h1>
-          <nav class="nav">
-            <button class="nav-btn" data-page="home">Home</button>
-            <button class="nav-btn" data-page="about">About</button>
-            <button class="nav-btn" data-page="contact">Contact</button>
-          </nav>
-        </header>
-        <main class="main">
-          <div id="page-content">
-            ${this.getPageContent('home')}
-          </div>
-        </main>
-        <footer class="footer">
-          <p>© 2024 Vite SPA Boilerplate</p>
-        </footer>
+        ${this.getHeroSection()}
+        ${this.getProductSection('NeuroCore Pro', 'Advanced neural processing unit', 'neural-core', 'The most powerful brain interface ever created. Process thoughts at lightning speed with our quantum-enhanced neural processor.')}
+        ${this.getProductSection('MindBridge Interface', 'Seamless thought-to-digital connection', 'mind-interface', 'Experience true telepathic communication with our revolutionary mind-bridge technology. Connect your thoughts directly to any device.')}
+        ${this.getProductSection('ThoughtStream Processor', 'Real-time consciousness analysis', 'thought-processor', 'Analyze and understand your cognitive patterns with our advanced AI-powered thought processing system.')}
+        ${this.getFeaturesSection()}
       </div>
     `;
   }
 
+  getHeroSection() {
+    return `
+      <section class="hero-section">
+        <div class="hero-content">
+          <h1 class="hero-title">NeuroLink AI</h1>
+          <p class="hero-subtitle">Revolutionary brain-computer interface technology powered by advanced AI</p>
+          <button class="cta-button" onclick="this.scrollToProducts()">Explore Our Devices</button>
+        </div>
+      </section>
+    `;
+  }
+
+  getProductSection(title, subtitle, imageClass, description) {
+    return `
+      <section class="product-section">
+        <h2 class="product-title">${title}</h2>
+        <p class="product-subtitle">${subtitle}</p>
+        <div class="product-image ${imageClass}">
+          <div class="device-placeholder">
+            ${this.getDeviceIcon(imageClass)}
+          </div>
+        </div>
+        <p style="max-width: 600px; margin: 0 auto; color: var(--text-secondary); font-size: 1.1rem; line-height: 1.6;">
+          ${description}
+        </p>
+        <button class="cta-button">Learn More</button>
+      </section>
+    `;
+  }
+
+  getDeviceIcon(imageClass) {
+    const icons = {
+      'neural-core': '🧠',
+      'mind-interface': '🔗',
+      'thought-processor': '⚡'
+    };
+    return icons[imageClass] || '🔬';
+  }
+
+  getFeaturesSection() {
+    return `
+      <section class="product-section">
+        <h2 class="product-title">Why NeuroLink AI?</h2>
+        <p class="product-subtitle">Breakthrough technology that transforms how humans interact with digital systems</p>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">🚀</div>
+            <h3 class="feature-title">Lightning Fast</h3>
+            <p class="feature-description">Process thoughts at the speed of light with our quantum-enhanced neural processors delivering unprecedented performance.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🔒</div>
+            <h3 class="feature-title">Secure & Private</h3>
+            <p class="feature-description">Your thoughts remain private with military-grade encryption and zero-trust security architecture protecting your neural data.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🎯</div>
+            <h3 class="feature-title">Precision Control</h3>
+            <p class="feature-description">Experience unmatched accuracy in thought-to-action translation with our advanced machine learning algorithms.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🌐</div>
+            <h3 class="feature-title">Universal Compatibility</h3>
+            <p class="feature-description">Seamlessly integrate with any device, platform, or system through our universal neural interface protocol.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🤖</div>
+            <h3 class="feature-title">AI-Powered</h3>
+            <p class="feature-description">Leverage cutting-edge AI and LLM technology to understand and interpret complex cognitive patterns and intentions.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3 class="feature-title">Real-time Processing</h3>
+            <p class="feature-description">Experience instantaneous response times with our real-time neural signal processing and interpretation system.</p>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
   bindEvents() {
-    const navButtons = this.element.querySelectorAll('.nav-btn');
-    navButtons.forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const page = e.target.dataset.page;
-        this.navigateTo(page);
-        
-        // Update active nav button
-        navButtons.forEach(b => b.classList.remove('active'));
-        e.target.classList.add('active');
+    // Add smooth scrolling for CTA buttons
+    const ctaButtons = this.element.querySelectorAll('.cta-button');
+    ctaButtons.forEach(button => {
+      button.addEventListener('click', (e) => {
+        if (e.target.textContent === 'Explore Our Devices') {
+          this.scrollToProducts();
+        } else {
+          this.showProductDetails(e.target);
+        }
       });
     });
 
-    // Set initial active state
-    this.element.querySelector('[data-page="home"]').classList.add('active');
+    // Add hover effects for product images
+    const productImages = this.element.querySelectorAll('.product-image');
+    productImages.forEach(image => {
+      image.addEventListener('mouseenter', this.handleImageHover);
+      image.addEventListener('mouseleave', this.handleImageLeave);
+    });
   }
 
-  navigateTo(page) {
-    const content = this.element.querySelector('#page-content');
-    content.innerHTML = this.getPageContent(page);
+  scrollToProducts() {
+    const firstProduct = this.element.querySelector('.product-section:nth-child(2)');
+    if (firstProduct) {
+      firstProduct.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'start' 
+      });
+    }
   }
 
-  getPageContent(page) {
-    const pages = {
-      home: `
-        <div class="page home-page">
-          <h2>Welcome to your Vite SPA!</h2>
-          <div class="card">
-            <p>This is a minimal single page application built with Vite.</p>
-            <p>Features:</p>
-            <ul>
-              <li>⚡️ Lightning fast development</li>
-              <li>📦 Minimal setup</li>
-              <li>🔥 Hot Module Replacement</li>
-              <li>🎨 Modern CSS</li>
-            </ul>
-            <p>Edit <code>src/main.js</code> and save to test HMR!</p>
-          </div>
-        </div>
-      `,
-      about: `
-        <div class="page about-page">
-          <h2>About</h2>
-          <div class="card">
-            <p>This boilerplate provides a solid foundation for building single page applications.</p>
-            <p>Built with vanilla JavaScript and powered by Vite for an optimal development experience.</p>
-          </div>
-        </div>
-      `,
-      contact: `
-        <div class="page contact-page">
-          <h2>Contact</h2>
-          <div class="card">
-            <p>Get in touch with us!</p>
-            <form class="contact-form">
-              <div class="form-group">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
-              </div>
-              <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-              </div>
-              <div class="form-group">
-                <label for="message">Message:</label>
-                <textarea id="message" name="message" rows="4" required></textarea>
-              </div>
-              <button type="submit">Send Message</button>
-            </form>
-          </div>
-        </div>
-      `
-    };
+  showProductDetails(button) {
+    const section = button.closest('.product-section');
+    const title = section.querySelector('.product-title').textContent;
+    
+    // Simple modal-like behavior (could be expanded)
+    alert(`More details about ${title} coming soon! This would typically open a detailed product page or modal.`);
+  }
 
-    return pages[page] || pages.home;
+  handleImageHover(e) {
+    const placeholder = e.target.querySelector('.device-placeholder');
+    if (placeholder) {
+      placeholder.style.transform = 'scale(1.1)';
+      placeholder.style.transition = 'transform 0.3s ease';
+    }
+  }
+
+  handleImageLeave(e) {
+    const placeholder = e.target.querySelector('.device-placeholder');
+    if (placeholder) {
+      placeholder.style.transform = 'scale(1)';
+    }
   }
 }
